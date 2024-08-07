@@ -21,6 +21,7 @@ router.post(
     ],
     validateRequest,
     async (req: Request, res: Response) => {
+        console.log('bro')
         const {email, password} = req.body
         const existingUser = await User.findOne({ email })
         if (!existingUser) {

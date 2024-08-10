@@ -3,3 +3,4 @@ tickets/node_modules
 package-lock.json
 .env
 common
+nats-test/node_modules

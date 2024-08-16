@@ -1,7 +1,9 @@
-import { NotAuthorizedError, NotFoundError, requireAuth, validateRequest } from '@uatickets/common'
+import { BadRequestError, NotAuthorizedError, NotFoundError, requireAuth, validateRequest } from '@uatickets/common'
 import express, { Request, Response } from 'express'
-import { Ticket } from '../../models/ticket'
+import { Ticket } from '../models/ticket'
 import { body } from 'express-validator'
+import { natsWrapper } from '../nats-wrapper'
+import { TicketUpdatedPublisher } from '../events/publishers/ticket-updated-publisher'
 
 const router = express.Router()
 
@@ -24,11 +26,21 @@ router.put(
         if(!ticket) {
             throw new NotFoundError()
         }
+        if (ticket.orderId) {
+            throw new BadRequestError('Cannot edit a reserved ticket')
+        }
         if(ticket.userId !== req.currentUser!.id) {
             throw new NotAuthorizedError()
         }
         ticket.set({title: req.body.title, price: req.body.price})
         await ticket.save()
+        new TicketUpdatedPublisher(natsWrapper.client).publish({
+            id: ticket.id,
+            version: ticket.version,
+            price: ticket.price,
+            title: ticket.title,
+            userId: ticket.userId
+        })
         res.send(ticket)
     }
 )

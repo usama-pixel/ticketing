@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: expiration-redis-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: expiration-redis # using this app uder the selector,
+      # the deployment is going to find the pods that it creates
+  template:
+    metadata:
+      labels:
+        app: expiration-redis # and this is going to be a label that gets applied to the pod
+    spec:
+      containers:
+        - name: expiration-redis # the name of the container
+          image: redis # the image name, this comes from the dockerhub automatically
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: expiration-redis-srv
+spec:
+  selector:
+    app: expiration-redis # this says that find the pods with the name auth-mongo
+  ports:
+    - name: db
+      protocol: TCP
+      port: 6379
+      targetPort: 6379

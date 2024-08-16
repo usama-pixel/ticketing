@@ -32,3 +32,27 @@ build:
         manual:
         - src: 'src/**/*.ts'
           dest: .
+    - image: usama8pixel/orders
+      context: orders
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+        - src: 'src/**/*.ts'
+          dest: .
+    - image: usama8pixel/expiration
+      context: expiration
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+        - src: 'src/**/*.ts'
+          dest: .
+    - image: usama8pixel/payments
+      context: payments
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+        - src: 'src/**/*.ts'
+          dest: .

@@ -1,8 +1,8 @@
 import mongoose from 'mongoose'
 import { app } from './app'
 import { natsWrapper } from './nats-wrapper'
-import { OrderCreatedListener } from './events/listeners/order-created-listener'
-import { OrderCancelledListener } from './events/listeners/order-cancelled-listener'
+// import { OrderCreatedListener } from './events/listeners/order-created-listener'
+// import { OrderCancelledListener } from './events/listeners/order-cancelled-listener'
 import { TestListener } from './events/listeners/test-listener'
 import { TestListener2 } from './events/listeners/test-listener2'
 

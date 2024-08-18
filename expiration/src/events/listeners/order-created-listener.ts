@@ -7,6 +7,7 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
     subject: Subject.OrderCreated = Subject.OrderCreated;
     queueGroupName: string = queueGroupName;
     async onMessage(data: OrderCreatedEvent['data'], msg: Message): Promise<void> {
+        console.log('expiration order created')
         const delay = new Date(data.expiresAt).getTime() - new Date().getTime()
         console.log(`Waiting ${delay} miliseconds to process the job`)
         await expirationQueue.add({

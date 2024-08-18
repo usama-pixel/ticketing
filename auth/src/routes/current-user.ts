@@ -7,7 +7,6 @@ router.get(
     '/api/users/currentuser',
     currentUser,
     (req, res) => {
-        console.log({currentUser: req.currentUser || null})
     return res.send({currentUser: req.currentUser || null})
 })
 

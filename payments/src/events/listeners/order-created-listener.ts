@@ -9,6 +9,7 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
     queueGroupName = queueGroupName;
 
     async onMessage(data: OrderCreatedEvent['data'], msg: Message): Promise<void> {
+        console.log('payement order created')
         const order = Order.build({
             id: data.id,
             price: data.ticket.price,

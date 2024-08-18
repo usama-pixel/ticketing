@@ -3,6 +3,9 @@ import { body } from 'express-validator'
 import { natsWrapper } from '../nats-wrapper'
 import { BadRequestError, NotAuthorizedError, NotFoundError, OrderStatus, requireAuth, validateRequest } from '@uatickets/common'
 import { Order } from '../models/order'
+import { stripe } from '../stripe'
+import { Payment } from '../models/payment'
+import { PaymentCreatedPublisher } from '../events/publishers/payment-created-publisher'
 
 const router = express.Router()
 
@@ -30,18 +33,24 @@ router.post(
         if (order.status === OrderStatus.Cancelled) {
             throw new BadRequestError('Cannot pay for an expired order')
         }
-        // const payment = Payment.build({
-        //     orderId,
-        //     stripeId: 'fake_stripe_id'
-        // })
-        // await payment.save()
-        // new PaymentCreatedPublisher(natsWrapper.client).publish({
-        //     id: payment.id,
-        //     orderId: payment.orderId,
-        //     stripeId: payment.stripeId
-        // })
-        // res.status(201).send({ id: payment.id })
-        res.send({success: true})
+        const charge = await stripe.charges.create({
+            amount: order.price * 100,
+            currency: 'usd',
+            source: token,
+            description: 'Order price'
+        })
+        const payment = Payment.build({
+            orderId,
+            stripeId: charge.id
+        })
+        new PaymentCreatedPublisher(natsWrapper.client).publish({
+            id: payment.id,
+            orderId: payment.orderId,
+            stripeId: payment.stripeId
+        })
+        // new.test.ts is giving error here
+        await payment.save()
+        res.status(201).send({ id: payment.id })
     }
 )
 

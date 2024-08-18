@@ -35,7 +35,9 @@ const start = async () => {
 
         new OrderCreatedListener(natsWrapper.client).listen()
         new OrderCancelledListener(natsWrapper.client).listen()
-        
+        natsWrapper.client.on('order:cancelled', async (data: any) => {
+            console.log('Payment Order cancelled data: ', data)
+        })
         await mongoose.connect(process.env.MONGO_URI)
         console.log("connected to mongodb")
     } catch(err) {

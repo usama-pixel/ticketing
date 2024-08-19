@@ -13,6 +13,8 @@ async function Navbar() {
     const links = [
         !data?.currentUser && {label: 'Sign Up', href: '/auth/signup'}, // this sort of expression will give either true or false, 
         !data?.currentUser && {label: 'Sign In', href: '/auth/signin'}, // same here
+        data?.currentUser && {label: 'Sell Tickets', href: '/tickets/new'},
+        data?.currentUser && {label: 'My Orders', href: '/orders'},
         data?.currentUser && {label: 'Sign Out', href: '/auth/signout'}, // same here
     ]
     .filter(linkConfig => linkConfig)

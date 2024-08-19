@@ -1,7 +1,7 @@
 import { OrderCreatedEvent, OrderStatus } from "@uatickets/common"
 import { Ticket } from "../../../models/ticket"
 import { natsWrapper } from "../../../nats-wrapper"
-import { OrderCreatedListener } from "../order-created-listener"
+import { TestListener as OrderCreatedListener } from "../test-listener"
 import mongoose from "mongoose"
 
 const setup = async () => {

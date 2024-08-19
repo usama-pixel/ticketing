@@ -24,6 +24,7 @@ router.post(
     async (req: Request, res: Response) => {
         const { orderId, token } = req.body
         const order = await Order.findById(orderId)
+        
         if (!order) {
             throw new NotFoundError()
         }

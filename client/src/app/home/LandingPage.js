@@ -31,7 +31,7 @@ export default function LandingPage() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div>
-        <h1>Tickets</h1>
+        <h2>Tickets</h2>
         <table>
           <thead>
             <tr>

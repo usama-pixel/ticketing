@@ -7,6 +7,7 @@ import { TestListener } from './events/listeners/test-listener'
 import { TestListener2 } from './events/listeners/test-listener2'
 
 const start = async () => {
+    console.log('tickets service starting...')
     if (!process.env.JWT_KEY) {
         throw new Error('JWT_KEY must be defined')
     }
